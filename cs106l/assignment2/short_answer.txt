@@ -5,7 +5,22 @@ Marriage Pact
 -------------
 
 Q1. It is your choice to use either an ordered or unordered set. In a few sentences, what are some of the tradeoffs between the two? Additionally, please give an example (that has not been shown in lecture) of a valid hash function that could be used to hash student names for an unordered set.
-A1. TODO
+A1. 
+ordered set 采用的是红黑树，顺序检索，
+unsorted set 采用的是hash表，速度快但是无法顺序检索
+
+像这样的hash
+struct MyHash {
+    size_t operator()(const std::string& s) const {
+        size_t hash = 0;
+        for (char c : s) {
+            hash = hash * 131 + c; // 131是一个常用的质数（可替换为31、37等）
+        }
+        return hash;
+    }
+};
+
 
 Q2. Note that we are saving pointers to names in the queue, not names themselves. Why might this be desired in this problem? What happens if the original set where the names are stored goes out of scope and the pointers are referenced?
-A2. TODO
+A2. 
+queue里使用指针可以节省内存，但是如果原本的set里的name被清除，但是queue里没有同步清除reference的话，那么会造成uaf……
